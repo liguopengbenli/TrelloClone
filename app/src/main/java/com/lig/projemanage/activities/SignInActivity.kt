@@ -1,14 +1,15 @@
-package com.lig.projemanage
+package com.lig.projemanage.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import com.lig.projemanage.R
+import kotlinx.android.synthetic.main.activity_sign_in.*
 
-class SignUpActivity : AppCompatActivity() {
+class SignInActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        setContentView(R.layout.activity_sign_in)
         //set activity full screen
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -17,13 +18,11 @@ class SignUpActivity : AppCompatActivity() {
         setupActionBar()
     }
 
-
     private fun setupActionBar(){
-        setSupportActionBar(toolbar_sign_up_activity)
+        setSupportActionBar(toolbar_sign_in_activity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-        toolbar_sign_up_activity.setNavigationOnClickListener { onBackPressed() }
+        toolbar_sign_in_activity.setNavigationOnClickListener { onBackPressed() }
     }
-
 
 }
