@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "920075035541",
+    "firebase_url": "https://projemanag-247ba.firebaseio.com",
+    "project_id": "projemanag-247ba",
+    "storage_bucket": "projemanag-247ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920075035541:android:0a076d12d3a147f9478c9c",
+        "android_client_info": {
+          "package_name": "com.lig.projemanage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920075035541-7c1mutu92cvdcdu3575qlacqugf9ndbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUx-ZXreR8Gq0vXNl0_xb_jFVEFhDlMGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920075035541-7c1mutu92cvdcdu3575qlacqugf9ndbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
