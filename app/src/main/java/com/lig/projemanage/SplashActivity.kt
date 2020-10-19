@@ -25,8 +25,7 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             startActivity(Intent(this, IntroActivity::class.java))
             finish() // close activity after very important
-        }, 2500
-        )
+        }, 2500)
 
     }
 }
