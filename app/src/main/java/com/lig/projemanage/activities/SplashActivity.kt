@@ -24,7 +24,13 @@ class SplashActivity : BaseActivity() {
         tv_app_name.typeface = typeFace
 
         Handler().postDelayed({
-            startActivity(Intent(this, IntroActivity::class.java))
+            var currentUserID = FireStoreClass().getCurrentUserId()
+            if(currentUserID.isNotEmpty()){
+                //skype the login
+                startActivity(Intent(this, MainActivity::class.java))
+            }else{
+                startActivity(Intent(this, IntroActivity::class.java))
+            }
             finish() // close activity after very important
         }, 2500)
 
