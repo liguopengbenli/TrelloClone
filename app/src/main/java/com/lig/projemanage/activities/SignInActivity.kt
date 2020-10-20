@@ -1,5 +1,6 @@
 package com.lig.projemanage.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignInActivity : BaseActivity() {
 
-    private val TAG = "SignInActivity"
+    private val TAG = this::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,7 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
