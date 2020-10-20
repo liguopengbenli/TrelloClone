@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 
 data class User(
-    val id: String,
+    val id: String = "", // important to define pre value = no-argument constructor
     val name: String = "",
     val email: String= "",
     val image: String="",
@@ -20,13 +20,13 @@ data class User(
         parcel.readString()!!,
         parcel.readLong(),
         parcel.readString()!!
-    ) {
-    }
+    )
+
 
     override fun describeContents() = 0
 
-    override fun writeToParcel(dest: Parcel?, flags: Int) = with(dest) {
-        this!!.writeString(id)
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(id)
         writeString(name)
         writeString(email)
         writeString(image)

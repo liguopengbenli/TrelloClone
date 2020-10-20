@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import com.lig.projemanage.R
+import com.lig.projemanage.firebase.FireStoreClass
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : BaseActivity() {

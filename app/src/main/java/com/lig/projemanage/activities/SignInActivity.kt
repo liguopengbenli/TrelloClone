@@ -9,6 +9,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.lig.projemanage.R
+import com.lig.projemanage.firebase.FireStoreClass
+import com.lig.projemanage.models.User
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
@@ -42,7 +44,7 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmail:success")
-                        startActivity(Intent(this, MainActivity::class.java))
+                        FireStoreClass().signInUser(this)
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
@@ -67,6 +69,12 @@ class SignInActivity : BaseActivity() {
                 false
             }else ->{true}
         }
+    }
+
+    fun signInSuccess(user: User){
+        hideProgressDialog()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
 }
