@@ -2,11 +2,19 @@ package com.lig.projemanage.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.lig.projemanage.R
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignInActivity : BaseActivity() {
+
+    private val TAG = "SignInActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -16,13 +24,48 @@ class SignInActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setupActionBar()
+        btn_sign_in.setOnClickListener {
+            signIn()
+        }
     }
+
+    private fun signIn(){
+        val email: String = et_email_sign_in.text.toString().trim{ it <= ' '}
+        val password: String = et_password_sign_in.text.toString().trim{ it <= ' '}
+        val auth : FirebaseAuth = FirebaseAuth.getInstance()
+        if(validateForm(email, password)){
+            showProgressDialog(resources.getString(R.string.please_wait))
+
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    hideProgressDialog()
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "signInWithEmail:success")
+                        val user = auth.currentUser
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(baseContext, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show()
+                    } } } }
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_sign_in_activity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         toolbar_sign_in_activity.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    private fun validateForm(email: String, password: String): Boolean{
+        return when {
+            TextUtils.isEmpty(email)->{
+                showErrorSnackBar("Please enter a email")
+                false
+            }
+            TextUtils.isEmpty(password)->{
+                showErrorSnackBar("Please enter a password")
+                false
+            }else ->{true}
+        }
     }
 
 }
