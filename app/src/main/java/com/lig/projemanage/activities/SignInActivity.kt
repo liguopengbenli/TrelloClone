@@ -42,7 +42,6 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmail:success")
-                        val user = auth.currentUser
                         startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.exception)

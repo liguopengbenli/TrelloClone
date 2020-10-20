@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lig.projemanage.R
+import com.lig.projemanage.firebase.FireStoreClass
+import com.lig.projemanage.models.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : BaseActivity() {
@@ -46,14 +48,13 @@ class SignUpActivity : BaseActivity() {
                 .addOnCompleteListener(
                 {
                     task ->
-                    hideProgressDialog()
                     if(task.isSuccessful){
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val registeredEmail = firebaseUser.email!!
-                        Toast.makeText(this, "$name you have successfully registered the email $registeredEmail", Toast.LENGTH_LONG).show()
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+                        val user = User(firebaseUser.uid, name, email)
+                        FireStoreClass().registerUser(this, user)
                     }else{
+                        //hideProgressDialog()
                         Toast.makeText(this, task.exception!!.message, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -78,6 +79,13 @@ class SignUpActivity : BaseActivity() {
                 false
             }else ->{true}
         }
+    }
+
+    fun userRegisteredSuccess(){
+        Toast.makeText(this, "You have successfully registered", Toast.LENGTH_LONG).show()
+        hideProgressDialog()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
 }

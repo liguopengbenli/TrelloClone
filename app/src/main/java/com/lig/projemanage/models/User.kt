@@ -12,7 +12,7 @@ data class User(
     val mobile: Long = 0,
     val fcmToken: String = ""
 
-): Parcelable {
+): Parcelable { // settings plugn market - install parcelable for kotlin
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
