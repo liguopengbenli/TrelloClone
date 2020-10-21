@@ -16,9 +16,14 @@ class CreateBoardActivity : AppCompatActivity() {
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_create_board_activity)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-        actionBar?.title = resources.getString(R.string.create_board_title)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.title = resources.getString(R.string.create_board_title)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+
         toolbar_create_board_activity.setNavigationOnClickListener { onBackPressed() }
     }
 

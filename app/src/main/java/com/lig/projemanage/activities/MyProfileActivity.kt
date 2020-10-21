@@ -109,9 +109,14 @@ class MyProfileActivity : BaseActivity() {
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_my_profile_activity)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-        actionBar?.title = resources.getString(R.string.my_profile)
+        val actionBar = supportActionBar
+
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+            actionBar.title = resources.getString(R.string.my_profile)
+        }
+
         toolbar_my_profile_activity.setNavigationOnClickListener { onBackPressed() }
     }
 

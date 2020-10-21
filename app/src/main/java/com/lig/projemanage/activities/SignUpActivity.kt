@@ -32,8 +32,11 @@ class SignUpActivity : BaseActivity() {
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_sign_up_activity)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+        val actionBar = supportActionBar
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+        }
         toolbar_sign_up_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
