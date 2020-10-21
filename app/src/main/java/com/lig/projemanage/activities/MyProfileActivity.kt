@@ -7,10 +7,15 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.lig.projemanage.R
 import com.lig.projemanage.firebase.FireStoreClass
 import com.lig.projemanage.models.User
@@ -28,6 +33,7 @@ class MyProfileActivity : BaseActivity() {
     }
 
     private var mSelectedImageFileUri: Uri? = null
+    private var mProfileImageURL: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +43,7 @@ class MyProfileActivity : BaseActivity() {
 
         iv_profile_user_image.setOnClickListener {
             if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-
+                showImageChooser()
             }else{
                 ActivityCompat.requestPermissions(
                     this,
@@ -45,8 +51,14 @@ class MyProfileActivity : BaseActivity() {
                     READ_STORAGE_PERMISSION_CODE
                 )
             }
-
         }
+
+        btn_update.setOnClickListener {
+            if(mSelectedImageFileUri != null){
+                uploadUserImage()
+            }
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -110,6 +122,35 @@ class MyProfileActivity : BaseActivity() {
         if(user.mobile!= 0L){
             et_mobile.setText(user.mobile.toString())
         }
+    }
+
+    private fun uploadUserImage(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        if(mSelectedImageFileUri != null){
+            val sRef : StorageReference = FirebaseStorage.getInstance()
+                .reference.child("USER_IMAGE" + System.currentTimeMillis() + "." + getFileExtersion(mSelectedImageFileUri))// create unique img name
+
+            sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener {
+                Log.e("Firebase img urL 1", it.metadata!!.reference!!.downloadUrl.toString())
+                it.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                    Log.e("Firebase img urL 2", it.toString())
+                            mProfileImageURL = it.toString()
+                    hideProgressDialog()
+                    //TODO update userprofildata
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this@MyProfileActivity, it.message, Toast.LENGTH_LONG).show()
+                hideProgressDialog()
+            }
+        }
+    }
+
+
+    private fun getFileExtersion(uri: Uri?):String?{
+        return MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(contentResolver.getType(uri!!))
+
     }
 
 
