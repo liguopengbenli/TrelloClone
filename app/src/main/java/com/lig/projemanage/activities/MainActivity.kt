@@ -34,6 +34,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view.setNavigationItemSelectedListener(this)
 
         FireStoreClass().loadUserData(this)
+
+        fab_create_board.setOnClickListener {
+            val intent = Intent(this, CreateBoardActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupActionBar(){
@@ -97,7 +102,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if(resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
             FireStoreClass().loadUserData(this)
         }else{
-            Log.e(TAG,"Cancelled")
+            Log.e(TAG,"Cancelled") //when user didn't click update button
         }
     }
+
+
 }
