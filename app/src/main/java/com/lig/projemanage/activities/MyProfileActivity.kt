@@ -177,11 +177,11 @@ class MyProfileActivity : BaseActivity() {
     private fun getFileExtersion(uri: Uri?):String?{
         return MimeTypeMap.getSingleton()
             .getExtensionFromMimeType(contentResolver.getType(uri!!))
-
     }
 
     fun profileUptateSuccess(){
         hideProgressDialog()
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
