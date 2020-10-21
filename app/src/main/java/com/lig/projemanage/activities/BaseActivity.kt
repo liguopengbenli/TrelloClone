@@ -46,7 +46,7 @@ open class BaseActivity : AppCompatActivity() {
         }
         this.doubleBackToExitPressedOnce = true // first time true second time go back
 
-        Toast.makeText(this, resources.getString(R.string.please_click_back_again_to_exit), Toast.LENGTH_SHORT)
+        Toast.makeText(this, resources.getString(R.string.please_click_back_again_to_exit), Toast.LENGTH_SHORT).show()
         Handler().postDelayed({doubleBackToExitPressedOnce = false}, 2000)
     }
 
