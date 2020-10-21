@@ -57,7 +57,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_my_profile ->{
-                Toast.makeText(this, "My profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MyProfileActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_sign_out ->{
                 FirebaseAuth.getInstance().signOut()

@@ -40,7 +40,7 @@ class FireStoreClass {
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(com.lig.projemanage.models.User::class.java)!!
 
-                when(activity){ 
+                when(activity){
                     is SignInActivity -> {
                         activity.signInSuccess(loggedInUser)
                     }
@@ -51,6 +51,14 @@ class FireStoreClass {
                 }
             }.addOnFailureListener {
                 e->
+                when(activity){
+                    is SignInActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MainActivity ->{
+                        activity.hideProgressDialog()
+                    }
+            }
                 android.util.Log.e(Log, "Error while log in $e")
             }
     }
