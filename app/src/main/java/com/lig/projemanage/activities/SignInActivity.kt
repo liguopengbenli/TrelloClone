@@ -44,7 +44,7 @@ class SignInActivity : BaseActivity() {
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmail:success")
-                        FireStoreClass().signInUser(this)
+                        FireStoreClass().loadUserData(this)
                     } else {
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",

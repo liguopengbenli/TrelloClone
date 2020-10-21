@@ -7,6 +7,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.lig.projemanage.activities.MainActivity
+import com.lig.projemanage.activities.MyProfileActivity
 import com.lig.projemanage.activities.SignInActivity
 import com.lig.projemanage.activities.SignUpActivity
 import com.lig.projemanage.utils.Constants
@@ -33,7 +34,7 @@ class FireStoreClass {
         return currentUserID
     }
 
-    fun signInUser(activity: Activity){
+    fun loadUserData(activity: Activity){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())  // in the mean time update user information
             .get()
@@ -46,6 +47,9 @@ class FireStoreClass {
                     }
                     is MainActivity ->{
                         activity.updateNavigationUserDetails(loggedInUser)
+                    }
+                    is MyProfileActivity ->{
+                        activity.setUserDataInUI(loggedInUser)
                     }
 
                 }
