@@ -12,6 +12,7 @@ import com.lig.projemanage.activities.SignInActivity
 import com.lig.projemanage.activities.SignUpActivity
 import com.lig.projemanage.utils.Constants
 
+
 class FireStoreClass {
     private val mFireStore = FirebaseFirestore.getInstance()
     private val Log = this.javaClass.simpleName
@@ -32,6 +33,21 @@ class FireStoreClass {
             currentUserID = currentUser.uid
         }
         return currentUserID
+    }
+
+    fun updateUserProfileData(activity: MyProfileActivity,
+                              userHashMap: HashMap<String,Any>){
+        mFireStore.collection(Constants.USERS)
+            .document(getCurrentUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                android.util.Log.e(Log, "Profile update successfully!")
+                activity.profileUptateSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                android.util.Log.e(Log, "Error on $it")
+            }
     }
 
     fun loadUserData(activity: Activity){
