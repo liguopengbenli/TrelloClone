@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_my_profile.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.IOException
 
-class CreateBoardActivity : AppCompatActivity() {
+class CreateBoardActivity : BaseActivity() {
 
     private var mSelectedImageFileUri: Uri? = null
     private lateinit var mUserName: String
@@ -42,7 +42,12 @@ class CreateBoardActivity : AppCompatActivity() {
             }
         }
     }
-    
+
+    fun boardCreatedSuccessfully(){
+        hideProgressDialog()
+        finish()
+    }
+
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_create_board_activity)

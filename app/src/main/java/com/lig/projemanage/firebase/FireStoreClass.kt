@@ -1,15 +1,14 @@
 package com.lig.projemanage.firebase
 
 import android.app.Activity
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
-import com.lig.projemanage.activities.MainActivity
-import com.lig.projemanage.activities.MyProfileActivity
-import com.lig.projemanage.activities.SignInActivity
-import com.lig.projemanage.activities.SignUpActivity
+import com.lig.projemanage.activities.*
+import com.lig.projemanage.models.Board
 import com.lig.projemanage.utils.Constants
 
 
@@ -33,6 +32,21 @@ class FireStoreClass {
             currentUserID = currentUser.uid
         }
         return currentUserID
+    }
+
+    fun createBoard(activity: CreateBoardActivity, board: Board){
+        mFireStore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                android.util.Log.e(Log, "Board create successfully!")
+                Toast.makeText(activity, "Board create successfully!", Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                android.util.Log.e(Log, "Board create failure $it!")
+            }
     }
 
     fun updateUserProfileData(activity: MyProfileActivity,
