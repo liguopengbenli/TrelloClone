@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firestore.v1.FirestoreGrpc
 import com.lig.projemanage.R
 import com.lig.projemanage.adapters.BoardItemsAdapter
 import com.lig.projemanage.firebase.FireStoreClass
@@ -30,8 +31,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     companion object{
         const val MY_PROFILE_REQUEST_CODE : Int = 11
-        private val TAG = this::class.java.simpleName
+        const val CREATE_BOARD_REQUEST_CODE: Int = 12
     }
+    private val TAG = this::class.java.simpleName
 
     private lateinit var mUserName:String
 
@@ -47,7 +49,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         fab_create_board.setOnClickListener {
             val intent = Intent(this, CreateBoardActivity::class.java)
             intent.putExtra(Constants.NAME, mUserName)
-            startActivity(intent)
+            startActivityForResult(intent, CREATE_BOARD_REQUEST_CODE)
         }
     }
 
@@ -135,7 +137,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
             FireStoreClass().loadUserData(this)
-        }else{
+        } else if (resultCode == Activity.RESULT_OK && requestCode == CREATE_BOARD_REQUEST_CODE){
+            FireStoreClass().getBoardList(this)
+        }
+        else{
             Log.e(TAG,"Cancelled") //when user didn't click update button
         }
     }
