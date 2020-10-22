@@ -20,12 +20,15 @@ import java.io.IOException
 class CreateBoardActivity : AppCompatActivity() {
 
     private var mSelectedImageFileUri: Uri? = null
-
+    private lateinit var mUserName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_board)
         setupActionBar()
+        if (intent.hasExtra((Constants.NAME))){
+            mUserName = intent.getStringExtra(Constants.NAME) //Passing by intent to avoid get db request
+        }
 
         iv_board_image.setOnClickListener {
             if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -39,6 +42,7 @@ class CreateBoardActivity : AppCompatActivity() {
             }
         }
     }
+    
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_create_board_activity)

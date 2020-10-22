@@ -9,6 +9,7 @@ import com.lig.projemanage.activities.MyProfileActivity
 
 object Constants{
     const val  USERS: String = "users"
+    const val BOARDS: String = "boards"
     const val IMAGE = "image"
     const val  NAME = "name"
     const val  MOBILE = "mobile"
