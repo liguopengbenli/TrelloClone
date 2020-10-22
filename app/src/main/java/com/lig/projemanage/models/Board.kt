@@ -7,17 +7,21 @@ import com.google.android.gms.common.internal.safeparcel.SafeParcelWriter.writeS
 // android-parcelable-intellij-plugin-kotlin extension help generate parcelable code
 
 data class Board(
+
     val name: String = "",
     val image: String = "",
     val createdBy: String = "",
-    val assignedTo: ArrayList<String> = ArrayList() //ArrayList because it can be assigned by more users
+    val assignedTo: ArrayList<String> = ArrayList(), //ArrayList because it can be assigned by more users
+    var documentID: String = ""
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
+        parcel.readString()!!
+
     ) {
     }
 
@@ -26,6 +30,7 @@ data class Board(
         parcel.writeString(image)
         parcel.writeString(createdBy)
         parcel.writeStringList(assignedTo)
+        parcel.writeString(documentID)
     }
 
     override fun describeContents(): Int {
