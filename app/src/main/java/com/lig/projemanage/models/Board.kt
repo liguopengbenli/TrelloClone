@@ -10,7 +10,7 @@ data class Board(
     val name: String = "",
     val image: String = "",
     val createdBy: String = "",
-    val assignedTo: ArrayList<String> = ArrayList()
+    val assignedTo: ArrayList<String> = ArrayList() //ArrayList because it can be assigned by more users
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
