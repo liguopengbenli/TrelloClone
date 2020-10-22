@@ -1,6 +1,7 @@
 package com.lig.projemanage.adapters
 
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,9 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 
 open class BoardItemsAdapter(private val context: Context, private var list: ArrayList<Board>):
             RecyclerView.Adapter<RecyclerView.ViewHolder>()
-
-
 {
+    private var myOnClickListener: OnIClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
        return MyViewHolder(LayoutInflater.from(context)
            .inflate(R.layout.item_board, parent, false))
@@ -33,7 +34,11 @@ open class BoardItemsAdapter(private val context: Context, private var list: Arr
 
             holder.itemView.tv_name.text = model.name
             holder.itemView.tv_created_by.text = "Created by: ${model.createdBy}"
-            
+            holder.itemView.setOnClickListener {
+                if(myOnClickListener != null){
+                    myOnClickListener!!.onClick(position, model)
+                }
+            }
         }
     }
 
@@ -41,6 +46,10 @@ open class BoardItemsAdapter(private val context: Context, private var list: Arr
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    interface OnIClickListener{
+        fun onClick(position: Int, model: Board)
     }
 
     private class MyViewHolder(view: View): RecyclerView.ViewHolder(view)
