@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.auth.User
@@ -33,6 +34,23 @@ class FireStoreClass {
             currentUserID = currentUser.uid
         }
         return currentUserID
+    }
+
+
+    fun getBoardDetails(activity: TaskListActivity, documentId: String){
+        mFireStore.collection(Constants.BOARDS)
+            .document(documentId)
+            .get()
+            .addOnSuccessListener {
+                    document ->
+                Log.i(TAG, document.toString())
+                activity.boardDetails(document.toObject(Board::class.java)!!)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(TAG, "Error while creating new board $it")
+            }
+
     }
 
     fun createBoard(activity: CreateBoardActivity, board: Board){
@@ -78,7 +96,7 @@ class FireStoreClass {
             .update(userHashMap)
             .addOnSuccessListener {
                 android.util.Log.e(TAG, "Profile update successfully!")
-                activity.profileUptateSuccess()
+                activity.profileUpdateSuccess()
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()

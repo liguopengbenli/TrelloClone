@@ -166,8 +166,7 @@ class MyProfileActivity : BaseActivity() {
         }
     }
 
-
-    fun profileUptateSuccess(){
+    fun profileUpdateSuccess(){
         hideProgressDialog()
         setResult(Activity.RESULT_OK)
         finish()

@@ -58,7 +58,6 @@ class CreateBoardActivity : BaseActivity() {
                 createBoard()
             }
         }
-
     }
 
     fun boardCreatedSuccessfully(){
