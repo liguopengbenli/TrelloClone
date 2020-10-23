@@ -12,7 +12,8 @@ data class Board(
     val image: String = "",
     val createdBy: String = "",
     val assignedTo: ArrayList<String> = ArrayList(), //ArrayList because it can be assigned by more users
-    var documentID: String = ""
+    var documentID: String = "",
+    var taskList: ArrayList<Task> = ArrayList()
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -20,7 +21,8 @@ data class Board(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.createStringArrayList()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.createTypedArrayList(Task.CREATOR)!!  //very important to create complex parcelable
 
     ) {
     }
@@ -31,6 +33,7 @@ data class Board(
         parcel.writeString(createdBy)
         parcel.writeStringList(assignedTo)
         parcel.writeString(documentID)
+        parcel.writeTypedList(taskList)
     }
 
     override fun describeContents(): Int {
