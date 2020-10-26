@@ -1,8 +1,11 @@
 package com.lig.projemanage.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lig.projemanage.R
 import com.lig.projemanage.adapters.TaskListItemsAdapter
@@ -29,6 +32,22 @@ class TaskListActivity : BaseActivity() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().getBoardDetails(this, boardDocumentID)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_members, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_member -> {
+                val intent = Intent(this, MembersActivity::class.java )
+                intent.putExtra(Constants.BOARD_DETAILS, mBoardDetails)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupActionBar(title : String){
