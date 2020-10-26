@@ -65,6 +65,31 @@ open class TaskListItemsAdapter(private val context: Context, private var list: 
                 }
             }
 
+            holder.itemView.ib_edit_list_name.setOnClickListener {
+                holder.itemView.et_edit_task_list_name.setText(model.title)
+                holder.itemView.ll_title_view.visibility  = View.GONE
+                holder.itemView.cv_edit_task_list_name.visibility = View.VISIBLE
+            }
+
+            holder.itemView.ib_close_editable_view.setOnClickListener {
+                holder.itemView.ll_title_view.visibility = View.VISIBLE
+                holder.itemView.cv_edit_task_list_name.visibility = View.GONE
+            }
+
+            holder.itemView.ib_done_edit_list_name.setOnClickListener {
+                //update
+                val listName = holder.itemView.et_edit_task_list_name.text.toString()
+                if(listName.isNotEmpty()){
+                    if(context is TaskListActivity){
+                        //Toast.makeText(context, "updata", Toast.LENGTH_SHORT).show()
+                        context.updateTaskList(position, listName, model )
+                    }
+                }else{
+                    Toast.makeText(context, "Please enter list name", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
 
         }
     }
