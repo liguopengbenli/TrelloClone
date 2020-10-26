@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.lig.projemanage.R
 import com.lig.projemanage.models.Board
 import com.lig.projemanage.utils.Constants
+import kotlinx.android.synthetic.main.activity_members.*
+import kotlinx.android.synthetic.main.activity_my_profile.*
 
 class MembersActivity : AppCompatActivity() {
     private lateinit var mBoardDetails: Board
@@ -16,5 +18,20 @@ class MembersActivity : AppCompatActivity() {
             mBoardDetails = intent.getParcelableExtra<Board>(Constants.BOARD_DETAILS)
         }
 
+        setupActionBar()
     }
+
+    private fun setupActionBar(){
+        setSupportActionBar(toolbar_members_activity)
+        val actionBar = supportActionBar
+
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+            actionBar.title = resources.getString(R.string.members)
+        }
+
+        toolbar_members_activity.setNavigationOnClickListener { onBackPressed() }
+    }
+
 }
