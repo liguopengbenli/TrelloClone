@@ -19,6 +19,7 @@ object Constants{
     const val DOCUMENT_ID: String = "documentID"
     const val TASK_LIST: String = "taskList"
     const val BOARD_DETAILS: String = "board_details"
+    const val ID:String = "id"
 
     fun getFileExtersion(activity: Activity, uri: Uri?):String?{
         return MimeTypeMap.getSingleton()

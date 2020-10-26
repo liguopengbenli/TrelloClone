@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lig.projemanage.R
 import com.lig.projemanage.adapters.MemberListItemsAdapter
+import com.lig.projemanage.firebase.FireStoreClass
 import com.lig.projemanage.models.Board
 import com.lig.projemanage.models.User
 import com.lig.projemanage.utils.Constants
@@ -20,8 +21,10 @@ class MembersActivity : BaseActivity() {
         if(intent.hasExtra(Constants.BOARD_DETAILS)){
             mBoardDetails = intent.getParcelableExtra<Board>(Constants.BOARD_DETAILS)
         }
-
         setupActionBar()
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
     }
 
     private fun setupActionBar(){

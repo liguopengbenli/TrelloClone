@@ -36,7 +36,6 @@ class FireStoreClass {
         return currentUserID
     }
 
-
     fun getBoardDetails(activity: TaskListActivity, documentId: String){
         mFireStore.collection(Constants.BOARDS)
             .document(documentId)
@@ -153,6 +152,27 @@ class FireStoreClass {
             .addOnFailureListener {
                 activity.hideProgressDialog()
                 Log.e(TAG, "Task List update fail")
+            }
+    }
+
+    fun getAssignedMembersListDetails(activity: MembersActivity, assignedTo: ArrayList<String>){
+        mFireStore.collection(Constants.USERS)
+            .whereIn(Constants.ID, assignedTo) // to compare the filed id with assigned to
+            .get() //get all the element according to condition
+            .addOnSuccessListener {
+               document ->
+                val usersList: ArrayList<com.lig.projemanage.models.User> = ArrayList()
+
+                for (i in document.documents){
+                    val user = i.toObject(com.lig.projemanage.models.User::class.java)!!
+                    usersList.add(user)
+                }
+
+                activity.setupMembersList(usersList)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating a board $it")
             }
     }
 
