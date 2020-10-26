@@ -44,7 +44,10 @@ class FireStoreClass {
             .addOnSuccessListener {
                     document ->
                 Log.i(TAG, document.toString())
-                activity.boardDetails(document.toObject(Board::class.java)!!)
+                val board = document.toObject(Board::class.java)!!
+                board.documentID = document.id
+                activity.boardDetails(board)
+
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()
@@ -134,6 +137,22 @@ class FireStoreClass {
                     }
             }
                 android.util.Log.e(TAG, "Error while log in $e")
+            }
+    }
+
+    fun addUpdateTaskList(activity: TaskListActivity, board: Board){
+        val taskListHashMap = HashMap<String, Any>()
+        taskListHashMap[Constants.TASK_LIST] = board.taskList
+        mFireStore.collection(Constants.BOARDS)
+            .document(board.documentID)
+            .update(taskListHashMap)
+            .addOnSuccessListener {
+                Log.i(TAG, "Task List update success")
+                activity.addUpdateTaskListSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(TAG, "Task List update fail")
             }
     }
 

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_task_list.*
 
 class TaskListActivity : BaseActivity() {
     private val TAG = this.javaClass.simpleName
+    private lateinit var mBoardDetails: Board
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,18 +31,19 @@ class TaskListActivity : BaseActivity() {
     }
 
     private fun setupActionBar(title : String){
-
         setSupportActionBar(toolbar_task_list_activity)
         val actionBar = supportActionBar
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-            actionBar.title = title
+            actionBar.title = mBoardDetails.name
         }
         toolbar_task_list_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
     fun boardDetails(board: Board){
+        mBoardDetails = board
+
         hideProgressDialog()
         setupActionBar(board.name)
 
@@ -52,6 +54,21 @@ class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this, board.taskList)
         rv_task_list.adapter = adapter
+    }
+
+    fun addUpdateTaskListSuccess() {
+        hideProgressDialog() // first process finish
+        showProgressDialog(resources.getString(R.string.please_wait)) // start another process
+        FireStoreClass().getBoardDetails(this, mBoardDetails.documentID)
+    }
+
+    fun createTaskList(taskListName: String){
+        val task = Task(taskListName, FireStoreClass().getCurrentUserId())
+        mBoardDetails.taskList.add(0, task)
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size-1)
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().addUpdateTaskList(this, mBoardDetails)
+
     }
 
 
