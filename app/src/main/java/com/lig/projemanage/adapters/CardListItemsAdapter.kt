@@ -14,7 +14,7 @@ open class CardListItemsAdapter(
     private var list: ArrayList<Card>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var onClickListener: OnClickListener? = null
+    private var onClickListener: MyonClickListener? = null
 
     /**
      * Inflates the item views which is designed in xml layout file
@@ -48,6 +48,12 @@ open class CardListItemsAdapter(
 
         if(holder is MyViewHolder){
             holder.itemView.tv_card_name.text = model.name
+            holder.itemView.setOnClickListener {
+                if(onClickListener != null){
+                    onClickListener!!.onClick(position)
+                }
+            }
+
         }
     }
 
@@ -61,14 +67,14 @@ open class CardListItemsAdapter(
     /**
      * A function for OnClickListener where the Interface is the expected parameter..
      */
-    fun setOnClickListener(onClickListener: OnClickListener) {
+    fun setOnClickListener(onClickListener: MyonClickListener) {
         this.onClickListener = onClickListener
     }
 
     /**
      * An interface for onclick items.
      */
-    interface OnClickListener {
+    interface MyonClickListener {
         fun onClick(cardPosition: Int)
     }
 
