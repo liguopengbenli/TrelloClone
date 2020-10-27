@@ -135,7 +135,7 @@ class MyProfileActivity : BaseActivity() {
             anyChange = true
         }
 
-        if(et_mobile.text.toString() != mUserDetails.mobile.toString()){
+        if(et_mobile.text.toString().isNotEmpty() && et_mobile.text.toString() != mUserDetails.mobile.toString()){
             userHashMap[Constants.MOBILE] = et_mobile.text.toString().toLong()
             anyChange = true
         }
