@@ -2,6 +2,7 @@ package com.lig.projemanage.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import com.lig.projemanage.R
 import com.lig.projemanage.models.Board
 import com.lig.projemanage.utils.Constants
@@ -21,8 +22,11 @@ class CardDetailsActivity : AppCompatActivity() {
         getIntentData()
         setupActionBar()
 
-    }
+        et_name_card_details.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
+        et_name_card_details.setSelection(et_name_card_details.text.toString().length) //set the focus directly in the ending of the text
 
+
+    }
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_card_details_activity)
@@ -46,6 +50,11 @@ class CardDetailsActivity : AppCompatActivity() {
         if(intent.hasExtra(Constants.CARD_LIST_ITEM_POSITION)){
             mCardPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, -10)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_delete_card, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
 
