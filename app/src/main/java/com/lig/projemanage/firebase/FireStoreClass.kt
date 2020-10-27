@@ -176,5 +176,40 @@ class FireStoreClass {
             }
     }
 
+    fun getMemberDetails(activity: MembersActivity, email: String){
+        mFireStore.collection(Constants.USERS)
+            .whereEqualTo(Constants.EMAIL, email)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                if(document.documents.size > 0){
+                    val user = document.documents[0].toObject(com.lig.projemanage.models.User::class.java)!!
+                    activity.memberDetail(user)
+                }else{
+                    activity.hideProgressDialog()
+                    activity.showErrorSnackBar("No such member found")
+                }
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(TAG, "Error while getting user details", it)
+            }
+    }
+
+    fun assignMemberToBoard(activity: MembersActivity, board: Board, user: com.lig.projemanage.models.User){
+        val assignedToHashMap = HashMap<String, Any>()
+        assignedToHashMap[Constants.ASSIGNED_TO] = board.assignedTo
+        mFireStore.collection(Constants.BOARDS)
+            .document(board.documentID)
+            .update(assignedToHashMap)
+            .addOnSuccessListener {
+                activity.memberAssignSuccess(user)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(TAG, "Error while creating a board", it)
+            }
+    }
+
 
 }
