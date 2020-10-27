@@ -1,7 +1,11 @@
 package com.lig.projemanage.activities
 
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lig.projemanage.R
 import com.lig.projemanage.adapters.MemberListItemsAdapter
@@ -11,6 +15,7 @@ import com.lig.projemanage.models.User
 import com.lig.projemanage.utils.Constants
 import kotlinx.android.synthetic.main.activity_members.*
 import kotlinx.android.synthetic.main.activity_my_profile.*
+import kotlinx.android.synthetic.main.dialog_search_member.*
 
 class MembersActivity : BaseActivity() {
     private lateinit var mBoardDetails: Board
@@ -38,6 +43,42 @@ class MembersActivity : BaseActivity() {
         }
 
         toolbar_members_activity.setNavigationOnClickListener { onBackPressed() }
+    }
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_member, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.action_add_member ->{
+                dialogSearchMember()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun dialogSearchMember(){
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_search_member)
+        dialog.tv_add.setOnClickListener {
+                val email = dialog.et_email_search_member.text.toString()
+                if(email.isNotEmpty()){
+                    dialog.dismiss()
+                    //TODO add member
+                }else{
+                    Toast.makeText(this@MembersActivity, "please enter members address.", Toast.LENGTH_SHORT).show()
+                }
+        }
+        dialog.tv_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     fun setupMembersList(list: ArrayList<User>){
