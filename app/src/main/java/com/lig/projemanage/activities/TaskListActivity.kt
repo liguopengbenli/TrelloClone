@@ -1,5 +1,6 @@
 package com.lig.projemanage.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,18 +21,31 @@ import kotlinx.android.synthetic.main.activity_task_list.*
 class TaskListActivity : BaseActivity() {
     private val TAG = this.javaClass.simpleName
     private lateinit var mBoardDetails: Board
+    private lateinit var boardDocumentID : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_list)
 
-        var boardDocumentID = ""
+        boardDocumentID = ""
         if(intent.hasExtra(Constants.DOCUMENT_ID)){
             boardDocumentID = intent.getStringExtra(Constants.DOCUMENT_ID)
         }
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().getBoardDetails(this, boardDocumentID)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == MEMBERS_REQUEST_CODE){
+            Log.i(TAG, "reload data")
+            showProgressDialog(resources.getString(R.string.please_wait)) // relaod data if add a new user
+            FireStoreClass().getBoardDetails(this, boardDocumentID)
+        }else{
+            Log.i(TAG, "Cancelled")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -44,7 +58,8 @@ class TaskListActivity : BaseActivity() {
             R.id.action_member -> {
                 val intent = Intent(this, MembersActivity::class.java )
                 intent.putExtra(Constants.BOARD_DETAILS, mBoardDetails)
-                startActivity(intent)
+                startActivityForResult(intent, MEMBERS_REQUEST_CODE)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -126,6 +141,10 @@ class TaskListActivity : BaseActivity() {
         FireStoreClass().addUpdateTaskList(this, mBoardDetails)
     }
 
+
+    companion object{
+        const val MEMBERS_REQUEST_CODE: Int = 13
+    }
 
 
 
