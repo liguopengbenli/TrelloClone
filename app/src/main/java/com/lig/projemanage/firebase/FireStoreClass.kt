@@ -139,7 +139,7 @@ class FireStoreClass {
             }
     }
 
-    fun addUpdateTaskList(activity: TaskListActivity, board: Board){
+    fun addUpdateTaskList(activity: Activity, board: Board){
         val taskListHashMap = HashMap<String, Any>()
         taskListHashMap[Constants.TASK_LIST] = board.taskList
         mFireStore.collection(Constants.BOARDS)
@@ -147,10 +147,20 @@ class FireStoreClass {
             .update(taskListHashMap)
             .addOnSuccessListener {
                 Log.i(TAG, "Task List update success")
-                activity.addUpdateTaskListSuccess()
+                if(activity is TaskListActivity){
+                    activity.addUpdateTaskListSuccess()
+                }
+                else if (activity is CardDetailsActivity){
+                    activity.addUpdateTaskListCardSuccess()
+                }
             }
             .addOnFailureListener {
-                activity.hideProgressDialog()
+                if(activity is TaskListActivity){
+                    activity.hideProgressDialog()
+
+                }else if(activity is CardDetailsActivity){
+                    activity.hideProgressDialog()
+                }
                 Log.e(TAG, "Task List update fail")
             }
     }
