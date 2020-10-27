@@ -1,14 +1,17 @@
 package com.lig.projemanage.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.lig.projemanage.R
 import com.lig.projemanage.firebase.FireStoreClass
 import com.lig.projemanage.models.Board
 import com.lig.projemanage.models.Card
+import com.lig.projemanage.models.Task
 import com.lig.projemanage.utils.Constants
 import kotlinx.android.synthetic.main.activity_card_details.*
 import kotlinx.android.synthetic.main.activity_my_profile.*
@@ -36,7 +39,6 @@ class CardDetailsActivity : BaseActivity() {
                 Toast.makeText(this, "please enter a card name.", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private fun setupActionBar(){
@@ -46,7 +48,7 @@ class CardDetailsActivity : BaseActivity() {
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-            actionBar.title = mBoardDetails.taskList[mCardPosition].cards[mCardPosition].name
+            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
         }
         toolbar_card_details_activity.setNavigationOnClickListener { onBackPressed() }
     }
@@ -68,6 +70,16 @@ class CardDetailsActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_delete_card -> {
+                alertDialogForDeleteCard(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     fun addUpdateTaskListCardSuccess(){
         hideProgressDialog()
         setResult(Activity.RESULT_OK)
@@ -83,6 +95,36 @@ class CardDetailsActivity : BaseActivity() {
         mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition] = card
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    private fun deleteCard(){
+        val cardsList: ArrayList<Card> = mBoardDetails.taskList[mTaskListPosition].cards
+
+        cardsList.removeAt(mCardPosition)
+
+        val taskList: ArrayList<Task> = mBoardDetails.taskList
+        taskList.removeAt(taskList.size-1) // get rid of add cards the last element of list
+
+        taskList[mTaskListPosition].cards = cardsList
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    private fun alertDialogForDeleteCard(cardName: String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(resources.getString(R.string.alert))
+        builder.setMessage(resources.getString(R.string.confirmation_message_to_delete_card))
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, which ->
+            dialogInterface.dismiss()
+            deleteCard()
+        }
+        builder.setNegativeButton(resources.getString(R.string.no)) { dialogInterface, which ->
+            dialogInterface.dismiss()
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false) // Will not allow user to cancel after clicking on remaining screen area.
+        alertDialog.show()  // show the dialog to UI
     }
 
 
