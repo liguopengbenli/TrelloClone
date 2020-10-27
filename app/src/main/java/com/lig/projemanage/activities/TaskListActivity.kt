@@ -142,7 +142,11 @@ class TaskListActivity : BaseActivity() {
     }
 
     fun cardDetails(taskListPosition: Int, cardPosition: Int){
-        startActivity(Intent(this, CardDetailsActivity::class.java))
+        val intent = Intent(this, CardDetailsActivity::class.java)
+        intent.putExtra(Constants.BOARD_DETAILS, mBoardDetails)
+        intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
+        intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        startActivity(intent)
     }
 
 
