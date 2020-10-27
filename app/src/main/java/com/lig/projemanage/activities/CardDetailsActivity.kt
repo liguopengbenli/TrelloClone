@@ -25,7 +25,6 @@ class CardDetailsActivity : AppCompatActivity() {
         et_name_card_details.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
         et_name_card_details.setSelection(et_name_card_details.text.toString().length) //set the focus directly in the ending of the text
 
-
     }
 
     private fun setupActionBar(){

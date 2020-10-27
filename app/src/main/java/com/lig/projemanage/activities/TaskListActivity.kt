@@ -39,7 +39,7 @@ class TaskListActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == MEMBERS_REQUEST_CODE){
+        if(resultCode == Activity.RESULT_OK && requestCode == MEMBERS_REQUEST_CODE || requestCode == CARD_DETAILS_REQUEST_CODE){
             Log.i(TAG, "reload data")
             showProgressDialog(resources.getString(R.string.please_wait)) // relaod data if add a new user
             FireStoreClass().getBoardDetails(this, boardDocumentID)
@@ -146,12 +146,14 @@ class TaskListActivity : BaseActivity() {
         intent.putExtra(Constants.BOARD_DETAILS, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
-        startActivity(intent)
+        startActivityForResult(intent, CARD_DETAILS_REQUEST_CODE)
     }
 
 
     companion object{
         const val MEMBERS_REQUEST_CODE: Int = 13
+        const val CARD_DETAILS_REQUEST_CODE: Int = 14
+
     }
 
 
