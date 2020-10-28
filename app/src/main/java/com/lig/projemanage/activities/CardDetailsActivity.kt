@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.lig.projemanage.R
 import com.lig.projemanage.dialogs.LabelColorListDialog
+import com.lig.projemanage.dialogs.MembersListDialog
 import com.lig.projemanage.firebase.FireStoreClass
 import com.lig.projemanage.models.Board
 import com.lig.projemanage.models.Card
@@ -50,10 +51,12 @@ class CardDetailsActivity : BaseActivity() {
             }
         }
 
-
-
         tv_select_label_color.setOnClickListener {
             labelColorListDialog()
+        }
+
+        tv_select_members.setOnClickListener {
+            memberListDialog()
         }
     }
 
@@ -162,6 +165,35 @@ class CardDetailsActivity : BaseActivity() {
             }
         }
         listDialog.show()
+    }
+
+    private fun memberListDialog(){
+        var cardAssignedMembersList = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].assignedTo
+
+        if(cardAssignedMembersList.size > 0){
+            for (i in mMembersDetailsList.indices){
+                for(j in cardAssignedMembersList){
+                    if(mMembersDetailsList[i].id == j){
+                        mMembersDetailsList[i].selected = true
+                    }
+                }
+            }
+        }else{
+            for (i in mMembersDetailsList.indices){
+                mMembersDetailsList[i].selected = false
+            }
+        }
+
+        val listDialog = object : MembersListDialog(
+            this,
+            mMembersDetailsList,
+            resources.getString(R.string.str_select_member)
+        ){
+            override fun onItemSelected(user: User, action: String) {
+
+            }
+
+        }.show()
     }
 
     private fun alertDialogForDeleteCard(cardName: String){
