@@ -35,6 +35,11 @@ class CardDetailsActivity : BaseActivity() {
         et_name_card_details.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
         et_name_card_details.setSelection(et_name_card_details.text.toString().length) //set the focus directly in the ending of the text
 
+        mSelectedColor = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].labelColor
+        if(mSelectedColor.isNotEmpty()){
+            setColor()
+        }
+
         btn_update_card_details.setOnClickListener {
             if(et_name_card_details.text.toString().isNotEmpty()){
                 updateCardDetails()
