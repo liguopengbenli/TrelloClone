@@ -1,6 +1,7 @@
 package com.lig.projemanage.adapters
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lig.projemanage.R
 import com.lig.projemanage.models.User
+import com.lig.projemanage.utils.Constants
 import kotlinx.android.synthetic.main.item_member.view.*
 
 open class MemberListItemsAdapter(
@@ -15,7 +17,8 @@ open class MemberListItemsAdapter(
     private var list: ArrayList<User>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var onClickListener: OnClickListener? = null
+    private var onClickListener: MyonClickListener? = null
+
 
     /**
      * Inflates the item views which is designed in xml layout file
@@ -47,7 +50,6 @@ open class MemberListItemsAdapter(
         val model = list[position]
 
         if (holder is MyViewHolder) {
-
             Glide
                 .with(context)
                 .load(model.image)
@@ -57,8 +59,22 @@ open class MemberListItemsAdapter(
 
             holder.itemView.tv_member_name.text = model.name
             holder.itemView.tv_member_email.text = model.email
-        }
 
+            if(model.selected){
+                holder.itemView.iv_selected_member.visibility = View.VISIBLE
+            }else{
+                holder.itemView.iv_selected_member.visibility = View.GONE
+            }
+         holder.itemView.setOnClickListener {
+             if(onClickListener != null){
+                 if(model.selected){
+                     onClickListener!!.onClick(position, model, Constants.UN_SELECT)
+                 }else{
+                     onClickListener!!.onClick(position, model, Constants.SELECT)
+                 }
+             }
+         }
+        }
     }
 
     /**
@@ -71,19 +87,17 @@ open class MemberListItemsAdapter(
     /**
      * A function for OnClickListener where the Interface is the expected parameter..
      */
-    fun setOnClickListener(onClickListener: OnClickListener) {
+    fun setMyOnClickListener(onClickListener: MyonClickListener) {
         this.onClickListener = onClickListener
-    }
-
-    /**
-     * An interface for onclick items.
-     */
-    interface OnClickListener {
-        fun onClick(position: Int, user: User, action: String)
     }
 
     /**
      * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
      */
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+
+    interface MyonClickListener{
+        fun onClick(position: Int, user: User, action: String)
+    }
 }

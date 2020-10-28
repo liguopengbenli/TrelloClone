@@ -10,7 +10,8 @@ data class User(
     val email: String= "",
     val image: String="",
     val mobile: Long = 0,
-    val fcmToken: String = ""
+    val fcmToken: String = "",
+    var selected: Boolean = false
 
 ): Parcelable { // settings plugn market - install parcelable for kotlin
     constructor(parcel: Parcel) : this(
@@ -20,6 +21,7 @@ data class User(
         parcel.readString()!!,
         parcel.readLong(),
         parcel.readString()!!
+        //parcel.readBoolean()
     )
 
 
@@ -32,6 +34,7 @@ data class User(
         writeString(image)
         writeLong(mobile)
         writeString(fcmToken)
+        //writeBoolean(selected)
 
     }
 
