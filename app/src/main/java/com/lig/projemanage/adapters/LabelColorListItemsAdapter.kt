@@ -20,7 +20,7 @@ class LabelColorListItemsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(LayoutInflater.from(context)
-            .inflate(R.layout.item_label_color, parent))
+            .inflate(R.layout.item_label_color, parent, false))
 
     }
 
@@ -28,6 +28,7 @@ class LabelColorListItemsAdapter(
         val item = list[position]
         if(holder is MyViewHolder){
             holder.itemView.view_main.setBackgroundColor(Color.parseColor(item))
+            // by defaut all colors are visible and when selected only one is visible
             if(item == mSelectedColor){
                 holder.itemView.iv_selected_color.visibility = View.VISIBLE
             }else {
