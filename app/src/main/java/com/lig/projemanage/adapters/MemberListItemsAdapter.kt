@@ -68,7 +68,7 @@ open class MemberListItemsAdapter(
          holder.itemView.setOnClickListener {
              if(onClickListener != null){
                  if(model.selected){
-                     onClickListener!!.onClick(position, model, Constants.UN_SELECT)
+                     onClickListener!!.onClick(position, model, Constants.UN_SELECT) // if already selected remove selection
                  }else{
                      onClickListener!!.onClick(position, model, Constants.SELECT)
                  }

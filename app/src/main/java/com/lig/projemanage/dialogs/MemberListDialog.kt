@@ -42,12 +42,12 @@ abstract class MembersListDialog(
             adapter!!.setMyOnClickListener(object :
                 MemberListItemsAdapter.MyonClickListener {
                 override fun onClick(position: Int, user: User, action:String) {
+                    onMyItemSelected(user, action)
                     dismiss()
-                    onItemSelected(user, action)
                 }
             })
         }
     }
 
-    protected abstract fun onItemSelected(user: User, action:String)
+    protected abstract fun onMyItemSelected(user: User, action:String)
 }
