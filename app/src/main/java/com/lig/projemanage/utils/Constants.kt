@@ -28,6 +28,10 @@ object Constants{
     const val TASK_LIST_ITEM_POSITION: String = "task_list_item_position"
     const val CARD_LIST_ITEM_POSITION: String = "card_list_item_position"
 
+    const val PROJEMANAG_PREFERENCE = "ProjemanagPrefs"
+    const val FCM_TOKEN_UPDATE = "fcmTokenUpdated"
+    const val FCM_TOKEN = "fcmToken"
+
 
     fun getFileExtersion(activity: Activity, uri: Uri?):String?{
         return MimeTypeMap.getSingleton()

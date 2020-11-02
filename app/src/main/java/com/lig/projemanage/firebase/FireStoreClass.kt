@@ -91,18 +91,33 @@ class FireStoreClass {
             }
     }
 
-    fun updateUserProfileData(activity: MyProfileActivity,
+    fun updateUserProfileData(activity: Activity,
                               userHashMap: HashMap<String,Any>){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .update(userHashMap)
             .addOnSuccessListener {
                 android.util.Log.e(TAG, "Profile update successfully!")
-                activity.profileUpdateSuccess()
+                when(activity){
+                    is MainActivity ->{
+                        activity.tokenUpdateSuccess()
+                    }
+                    is MyProfileActivity ->{
+                        activity.profileUpdateSuccess()
+                    }
+                }
             }
-            .addOnFailureListener {
-                activity.hideProgressDialog()
-                android.util.Log.e(TAG, "Error on $it")
+            .addOnFailureListener {e ->
+                when(activity){
+                    is MainActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                    is MyProfileActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                android.util.Log.e(TAG, "Error on $e")
             }
     }
       // readBoardsList: for deciding if we reload or not

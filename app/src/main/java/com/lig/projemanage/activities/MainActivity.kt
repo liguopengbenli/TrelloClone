@@ -1,7 +1,9 @@
 package com.lig.projemanage.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firestore.v1.FirestoreGrpc
 import com.lig.projemanage.R
 import com.lig.projemanage.adapters.BoardItemsAdapter
@@ -37,12 +40,26 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private lateinit var mUserName:String
 
+    private lateinit var mSharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupActionBar()
         nav_view.setNavigationItemSelectedListener(this)
+
+        mSharedPreferences = this.getSharedPreferences(Constants.PROJEMANAG_PREFERENCE, Context.MODE_PRIVATE)
+        val tokenUpdated = mSharedPreferences.getBoolean(Constants.FCM_TOKEN_UPDATE, false)
+
+        if(tokenUpdated){
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().loadUserData(this, true)
+        }else{
+            FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this@MainActivity){
+                updateFCMToken(it.token)
+            }
+        }
 
         FireStoreClass().loadUserData(this, true)
 
@@ -51,6 +68,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             intent.putExtra(Constants.NAME, mUserName)
             startActivityForResult(intent, CREATE_BOARD_REQUEST_CODE)
         }
+
+
     }
 
     fun populateBoardsListToUI(boardslist: ArrayList<Board>){
@@ -114,6 +133,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             R.id.nav_sign_out ->{
                 FirebaseAuth.getInstance().signOut()
+                mSharedPreferences.edit().clear().apply()
 
                 val intent = Intent(this, IntroActivity::class.java)
                 // add flag to custom behavior of intent
@@ -127,6 +147,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User, readBoardsList: Boolean){
+        hideProgressDialog()
         mUserName = user.name
         Glide // using glide to get media from internet with its url
             .with(this)
@@ -152,6 +173,22 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         else{
             Log.e(TAG,"Cancelled") //when user didn't click update button
         }
+    }
+
+    fun tokenUpdateSuccess(){
+        hideProgressDialog()
+        val editor: SharedPreferences.Editor = mSharedPreferences.edit()
+        editor.putBoolean(Constants.FCM_TOKEN_UPDATE, true)
+        editor.apply()
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().loadUserData(this, true)
+    }
+
+    private fun updateFCMToken(token: String){
+        val userHashMap = HashMap<String, Any>()
+        userHashMap[Constants.FCM_TOKEN] = token
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().updateUserProfileData(this, userHashMap)
     }
 
 
