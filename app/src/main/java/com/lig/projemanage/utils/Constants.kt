@@ -33,6 +33,16 @@ object Constants{
     const val FCM_TOKEN = "fcmToken"
 
 
+    // FCM notification
+    const val FCM_BASE_URL:String = "https://fcm.googleapis.com/fcm/send"
+    const val FCM_AUTHORIZATION:String = "authorization"
+    const val FCM_KEY:String = "key"
+    const val FCM_SERVER_KEY:String = "AAAA1ji-45U:APA91bEMHgGzrEwPpIOkEAOiYrxNpbt_GwwHV8nvmuCI4TkXQjLyHS4YxOqrCrVeu6xmTjSyUgZB8xlpYKAj2m2n4Ev7m2Yp65GpqgA_1OZa1dt0hd_3ZU_mU7MFOzWCzAsatMZHaz4u"
+    const val FCM_KEY_TITLE:String = "title"
+    const val FCM_KEY_MESSAGE:String = "message"
+    const val FCM_KEY_DATA:String = "data"
+    const val FCM_KEY_TO:String = "to"
+
     fun getFileExtersion(activity: Activity, uri: Uri?):String?{
         return MimeTypeMap.getSingleton()
             .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
